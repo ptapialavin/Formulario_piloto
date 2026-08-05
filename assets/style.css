@@ -30,7 +30,6 @@ body {
     min-height: 100vh;
 }
 
-/* Base Móvil (Mobile First) */
 .form-container {
     background: var(--bg-card);
     width: 100%;
@@ -104,7 +103,6 @@ input:focus, select:focus {
     box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
 }
 
-/* Radio buttons específicos */
 .radio-group {
     display: flex;
     gap: 20px;
@@ -132,7 +130,6 @@ input:focus, select:focus {
     cursor: not-allowed;
 }
 
-/* Celular con prefijo fijo */
 .phone-input {
     display: flex;
     align-items: stretch;
@@ -155,7 +152,6 @@ input:focus, select:focus {
     flex: 1;
 }
 
-/* Checkbox de política de privacidad */
 .form-group-checkbox {
     background-color: #f8fafc;
     border: 1px solid var(--border);
@@ -192,7 +188,6 @@ input:focus, select:focus {
     margin-top: 8px;
 }
 
-/* Sugerencia de corrección de correo */
 .suggestion-message {
     display: none;
     font-size: 0.82rem;
@@ -211,7 +206,6 @@ input:focus, select:focus {
     font-size: 0.82rem;
 }
 
-/* Estado de Error */
 input.invalid, select.invalid {
     border-color: var(--error);
     background-color: var(--error-bg);
@@ -229,7 +223,6 @@ input.invalid, select.invalid {
     font-weight: 500;
 }
 
-/* Mostrar error cuando la clase 'invalid' esté presente en el contenedor o elemento */
 input.invalid ~ .error-message,
 select.invalid ~ .error-message,
 .form-group.invalid .error-message {
@@ -274,7 +267,6 @@ button:disabled {
     cursor: not-allowed;
 }
 
-/* Ajustes Escalados para Pantallas Grandes (Tablets / Desktop) */
 @media (min-width: 768px) {
     body {
         padding: 40px 20px;
