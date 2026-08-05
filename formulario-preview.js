@@ -28,12 +28,21 @@ document.addEventListener('DOMContentLoaded', () => {
         return div.innerHTML;
     }
 
+    // ---------------------------------------------------------------
+    // 0. Cargar el evento indicado en la URL (?evento=ID). Ya no hay
+    //    selector: cada invitación trae su propio link específico.
+    // ---------------------------------------------------------------
     function idEventoDesdeURL() {
         const params = new URLSearchParams(window.location.search);
         const id = params.get('evento');
         return id ? Number(id) : null;
     }
 
+    // -----------------------------------------------------------------
+    // VISTA PREVIA: en vez de pedirle el evento al servidor (que no
+    // existe en esta versión), se usa un evento de ejemplo fijo. Cambia
+    // estos datos aquí mismo para ver cómo se vería con otro evento.
+    // -----------------------------------------------------------------
     const EVENTO_DE_EJEMPLO = {
         id: 1,
         nombre: 'Evento de ejemplo — Webinar ProEmpresas',
@@ -56,6 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function cargarEvento() {
+        // Simula el mismo tiempo de carga que tendría una petición real,
+        // para poder ver el estado de "Cargando información del evento…".
         return new Promise(resolve => {
             setTimeout(() => {
                 eventoActual = EVENTO_DE_EJEMPLO;
@@ -74,6 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
         sinEvento.style.display = 'block';
     }
 
+    // Aplica el color y el logo propios de este evento (si los definió el
+    // organizador); si no, el formulario se queda con los colores por
+    // defecto del sistema, sin ningún cambio visible.
     function aplicarMarcaEvento(evento) {
         if (evento.colorPrincipal) {
             document.documentElement.style.setProperty('--primary-color', evento.colorPrincipal);
@@ -82,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const logoEl = document.getElementById('logoEvento');
         if (evento.logoUrl) {
-            logoEl.src = evento.logoUrl;
+            logoEl.src = evento.logoUrl; // asignación por propiedad: segura, no interpreta HTML
             logoEl.style.display = 'block';
         } else {
             logoEl.style.display = 'none';
@@ -97,6 +111,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Oscurece un color hexadecimal (#RRGGBB) un cierto porcentaje, para
+    // tener una variante "oscura" del color principal sin pedirle al
+    // organizador que elija dos colores.
     function oscurecerColor(hex, porcentaje) {
         const limpio = hex.replace('#', '');
         if (limpio.length !== 6) return hex;
@@ -152,14 +169,29 @@ document.addEventListener('DOMContentLoaded', () => {
             </span>`;
     }
 
+    // El login solo tiene sentido si el evento cargó bien: se encadena
+    // después de cargarEvento() en vez de correr en paralelo, para evitar
+    // que ambos mensajes ("sin evento" y "datos autocompletados") se
+    // muestren a la vez por una condición de carrera.
     cargarEvento().then(eventoValido => {
         if (eventoValido) intentarAutocompletar();
     });
 
+    // ---------------------------------------------------------------
+    // 0.1 Login por magic link: si la URL trae ?loginToken=..., se
+    //     verifica y se autocompleta el formulario con el perfil guardado.
+    //     Si no, se ofrece el formulario para solicitar el enlace.
+    // ---------------------------------------------------------------
     function idLoginTokenDesdeURL() {
         return new URLSearchParams(window.location.search).get('loginToken');
     }
 
+    // -----------------------------------------------------------------
+    // VISTA PREVIA: no hay servidor real detrás, así que no se puede
+    // verificar ningún magic link ni reconocer dispositivos de verdad.
+    // Se muestra directamente el cuadro para pedir el enlace, tal como
+    // se vería para alguien que nunca se ha inscrito antes.
+    // -----------------------------------------------------------------
     function intentarAutocompletar() {
         loginPerfil.style.display = 'block';
     }
@@ -197,12 +229,17 @@ document.addEventListener('DOMContentLoaded', () => {
         resultadoLogin.textContent = 'Enviando...';
         resultadoLogin.className = 'resultado-checkin';
 
+        // VISTA PREVIA: no hay servidor real ni correo real — se simula
+        // la respuesta después de un momento, solo para ver cómo se ve.
         setTimeout(() => {
             resultadoLogin.textContent = 'Te enviamos un enlace de acceso a tu correo. Válido por 15 minutos.';
             resultadoLogin.className = 'resultado-checkin exito';
         }, 600);
     });
 
+    // ---------------------------------------------------------------
+    // 1. Corrector de dominios de correo
+    // ---------------------------------------------------------------
     const dominiosValidos = [
         'gmail.com', 'hotmail.com', 'outlook.com', 'outlook.es', 'hotmail.es',
         'yahoo.com', 'yahoo.es', 'live.com', 'icloud.com', 'me.com', 'msn.com', 'uc.cl', 'gmail.cl'
@@ -259,6 +296,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // ---------------------------------------------------------------
+    // 2. Formateo de RUT en vivo
+    // ---------------------------------------------------------------
     function formatearRut(valor) {
         let limpio = valor.replace(/[^0-9kK]/g, '').toUpperCase();
         if (limpio.length === 0) return '';
@@ -277,11 +317,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    // ---------------------------------------------------------------
+    // 3. Celular
+    // ---------------------------------------------------------------
     const celularInput = document.getElementById('celular');
     celularInput.addEventListener('input', () => {
         celularInput.value = celularInput.value.replace(/\D/g, '').slice(0, 8);
     });
 
+    // ---------------------------------------------------------------
+    // 4. Envío del formulario
+    // ---------------------------------------------------------------
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         formStatus.textContent = '';
@@ -358,6 +404,9 @@ document.addEventListener('DOMContentLoaded', () => {
         btnSubmit.disabled = true;
         btnSubmit.textContent = 'Enviando...';
 
+        // VISTA PREVIA: no hay servidor real — se simula una respuesta
+        // exitosa después de un momento, para ver la pantalla final.
+        // Aquí, en el archivo real, va la llamada fetch('/api/inscripcion').
         setTimeout(() => {
             formStatus.textContent = 'Inscripción registrada con éxito. Revisa tu correo para la confirmación.';
             formStatus.className = 'form-status success';
