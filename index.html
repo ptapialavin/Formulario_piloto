@@ -39,13 +39,13 @@
 
             <div class="form-group">
                 <label for="nombre">Nombre *</label>
-                <input type="text" id="nombre" name="nombre" required placeholder="Tu primer y segundo nombre">
+                <input type="text" id="nombre" name="nombre" required placeholder="Tu primer nombre">
                 <span class="error-message" id="error-nombre">El nombre es obligatorio.</span>
             </div>
 
             <div class="form-group">
-                <label for="apellido">Apellido *</label>
-                <input type="text" id="apellido" name="apellido" required placeholder="Tus apellidos">
+                <label for="apellido">Apellido Paterno *</label>
+                <input type="text" id="apellido" name="apellido" required placeholder="Tu apellido paterno">
                 <span class="error-message" id="error-apellido">El apellido es obligatorio.</span>
             </div>
 
@@ -60,20 +60,20 @@
             </div>
 
             <div class="form-group">
-                <label for="nombreEmpresa">Nombre de Empresa *</label>
-                <input type="text" id="nombreEmpresa" name="nombreEmpresa" required placeholder="Razón social o nombre fantasía">
+                <label for="nombreEmpresa">Razón Social *</label>
+                <input type="text" id="nombreEmpresa" name="nombreEmpresa" required placeholder="Razón social de la empresa">
                 <span class="error-message" id="error-nombreEmpresa">El nombre de la empresa es obligatorio.</span>
             </div>
 
             <div class="form-group">
                 <label for="rutPersona">RUT Persona *</label>
-                <input type="text" id="rutPersona" name="rutPersona" required placeholder="12.345.678-9" maxlength="12" autocomplete="off">
+                <input type="text" id="rutPersona" name="rutPersona" required placeholder="12345678-9" maxlength="10" autocomplete="off">
                 <span class="error-message" id="error-rutPersona">Ingresa un RUT de persona válido (con dígito verificador correcto).</span>
             </div>
 
             <div class="form-group">
                 <label for="rutEmpresa">RUT Empresa *</label>
-                <input type="text" id="rutEmpresa" name="rutEmpresa" required placeholder="76.543.210-K" maxlength="12" autocomplete="off">
+                <input type="text" id="rutEmpresa" name="rutEmpresa" required placeholder="76543210-K" maxlength="10" autocomplete="off">
                 <span class="error-message" id="error-rutEmpresa">Ingresa un RUT de empresa válido (con dígito verificador correcto).</span>
             </div>
 
@@ -94,11 +94,20 @@
                 <label for="rubro">¿En qué RUBRO clasificaría su empresa? *</label>
                 <select id="rubro" name="rubro" required>
                     <option value="" disabled selected>Selecciona una opción</option>
-                    <option value="Tecnología">Tecnología / TI</option>
-                    <option value="Comercio">Comercio / Retail</option>
-                    <option value="Servicios">Servicios Profesionales</option>
-                    <option value="Manufactura">Manufactura / Producción</option>
-                    <option value="Otro">Otro Rubro</option>
+                    <option value="AGRICULTURA">AGRICULTURA</option>
+                    <option value="COMERCIO">COMERCIO</option>
+                    <option value="CONSTRUCCIÓN">CONSTRUCCIÓN</option>
+                    <option value="SALUD">SALUD</option>
+                    <option value="SERVICIOS">SERVICIOS</option>
+                    <option value="INDUSTRIA">INDUSTRIA</option>
+                    <option value="EDUCACIÓN">EDUCACIÓN</option>
+                    <option value="MINERÍA">MINERÍA</option>
+                    <option value="SERVICIOS FINANCIEROS">SERVICIOS FINANCIEROS</option>
+                    <option value="TRANSPORTE">TRANSPORTE</option>
+                    <option value="EXPORTACIÓN">EXPORTACIÓN</option>
+                    <option value="TURISMO">TURISMO</option>
+                    <option value="TECNOLOGÍA">TECNOLOGÍA</option>
+                    <option value="OTRO">OTRO</option>
                 </select>
                 <span class="error-message" id="error-rubro">Selecciona un rubro.</span>
             </div>
@@ -106,19 +115,25 @@
             <div class="form-group">
                 <label for="facturacion">Facturación Anual *</label>
                 <select id="facturacion" name="facturacion" required>
-                    <option value="" disabled selected>Selecciona un rango (UF)</option>
-                    <option value="Micro">Micro (hasta 2.400 UF)</option>
-                    <option value="Pequeña">Pequeña (2.401 a 25.000 UF)</option>
-                    <option value="Mediana">Mediana (25.001 a 100.000 UF)</option>
-                    <option value="Grande">Grande (más de 100.000 UF)</option>
+                    <option value="" disabled selected>Selecciona un rango</option>
+                    <option value="$1 a $95 Millones aprox.">$1 a $95 Millones aprox.</option>
+                    <option value="$95 Millones a $993 Millones aprox.">$95 Millones a $993 Millones aprox.</option>
+                    <option value="$993 Millones a $3.973 Millones aprox.">$993 Millones a $3.973 Millones aprox.</option>
+                    <option value="Más de $3.973 Millones aprox.">Más de $3.973 Millones aprox.</option>
                 </select>
                 <span class="error-message" id="error-facturacion">Selecciona un rango de facturación.</span>
             </div>
 
             <div class="form-group">
                 <label for="trabajadores">Cantidad de Trabajadores *</label>
-                <input type="number" id="trabajadores" name="trabajadores" required min="1" placeholder="Ej. 5">
-                <span class="error-message" id="error-trabajadores">Ingresa un número válido de trabajadores.</span>
+                <select id="trabajadores" name="trabajadores" required>
+                    <option value="" disabled selected>Selecciona un rango</option>
+                    <option value="1 a 9 Trabajadores/as">1 a 9 Trabajadores/as</option>
+                    <option value="10 a 49 Trabajadores/as">10 a 49 Trabajadores/as</option>
+                    <option value="50 a 199 Trabajadores/as">50 a 199 Trabajadores/as</option>
+                    <option value="Más de 200 Trabajadores/as">Más de 200 Trabajadores/as</option>
+                </select>
+                <span class="error-message" id="error-trabajadores">Selecciona un rango de trabajadores.</span>
             </div>
 
             <div class="form-group">
@@ -131,7 +146,7 @@
             </div>
 
             <div class="form-group">
-                <label>¿Desea recibir más información con respecto a PROPYME y Colaboradores del Ciclo Reactiva Digital? *</label>
+                <label id="labelNewsletter">¿Desea recibir más información con respecto a PROPYME y Colaboradores del Ciclo Reactiva Digital? *</label>
                 <div class="radio-group">
                     <label class="radio-label"><input type="radio" name="newsletter" value="SI" required> SI</label>
                     <label class="radio-label"><input type="radio" name="newsletter" value="NO"> NO</label>
@@ -139,14 +154,9 @@
                 <span class="error-message" id="error-newsletter">Selecciona una opción.</span>
             </div>
 
-            <div class="form-group form-group-checkbox">
-                <label class="checkbox-label">
-                    <input type="checkbox" id="privacidad" name="privacidad" required>
-                    <span>He leído y acepto la <a href="#" id="linkPoliticas">Política de Privacidad</a> *</span>
-                </label>
-                <p class="hint-text">La aceptación de esta política será obligatoria por normativa vigente en Chile a partir de diciembre de 2026.</p>
-                <span class="error-message" id="error-privacidad">Debes aceptar la Política de Privacidad para continuar.</span>
-            </div>
+            <!-- Política de Privacidad: se retira temporalmente del formulario
+                 hasta que el documento esté validado y aprobado. Cuando esté
+                 lista, restaurar este bloque y su validación en el JS. -->
 
             <button type="submit" id="btnSubmit">Enviar Inscripción</button>
             <p class="form-status" id="formStatus" aria-live="polite"></p>

@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let eventoActual = null;
 
+    // -----------------------------------------------------------------
+    // CONFIG POR EVENTO: editar esta línea al reutilizar el formulario
+    // para otro evento (ej. "PROPYME" en vez de "Colaboradores del Ciclo
+    // Reactiva Digital"). Evita tener que tocar el HTML cada vez.
+    // -----------------------------------------------------------------
+    const NOMBRE_EVENTO_NEWSLETTER = 'PROPYME y Colaboradores del Ciclo Reactiva Digital';
+    const labelNewsletter = document.getElementById('labelNewsletter');
+    if (labelNewsletter) {
+        labelNewsletter.textContent = `¿Desea recibir más información con respecto a ${NOMBRE_EVENTO_NEWSLETTER}? *`;
+    }
+
     function escaparHTML(valor) {
         const div = document.createElement('div');
         div.textContent = valor === null || valor === undefined ? '' : String(valor);
@@ -300,11 +311,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Formateo de RUT en vivo
     // ---------------------------------------------------------------
     function formatearRut(valor) {
+        // Formato solicitado: sin puntos de miles, solo "12345678-9".
         let limpio = valor.replace(/[^0-9kK]/g, '').toUpperCase();
         if (limpio.length === 0) return '';
         let dv = limpio.slice(-1);
         let cuerpo = limpio.slice(0, -1);
-        cuerpo = cuerpo.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         return cuerpo ? `${cuerpo}-${dv}` : dv;
     }
     ['rutPersona', 'rutEmpresa'].forEach(id => {
@@ -372,33 +383,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const trabajadores = document.getElementById('trabajadores');
-        if (trabajadores.value === '' || parseInt(trabajadores.value) < 1) { markInvalid(trabajadores, true); isFormValid = false; } else markInvalid(trabajadores, false);
+        if (trabajadores.value === '') { markInvalid(trabajadores, true); isFormValid = false; } else markInvalid(trabajadores, false);
 
         if (!celularRegex.test(celularInput.value.trim()) || celularInput.value.trim().startsWith('0')) {
             markInvalid(celularInput, true); isFormValid = false;
         } else markInvalid(celularInput, false);
 
-        const privacidad = document.getElementById('privacidad');
-        const privacidadParent = privacidad.closest('.form-group');
-        if (!privacidad.checked) { privacidadParent.classList.add('invalid'); isFormValid = false; } else privacidadParent.classList.remove('invalid');
+        // Política de Privacidad: sin checkbox por ahora (ver nota en index.html).
 
         if (!isFormValid) return;
 
+        // -----------------------------------------------------------------
+        // Normalización de datos para que queden grabados en el Excel tal
+        // como se pidió (mayúsculas/minúsculas y solo primer nombre /
+        // apellido paterno), independiente de cómo los haya tipeado la
+        // persona en el formulario.
+        // -----------------------------------------------------------------
+        const primeraPalabra = (valor) => valor.trim().split(/\s+/)[0] || '';
+
         const payload = {
             eventoId: eventoActual.id,
-            nombre: document.getElementById('nombre').value.trim(),
-            apellido: document.getElementById('apellido').value.trim(),
+            nombre: primeraPalabra(document.getElementById('nombre').value).toUpperCase(),
+            apellido: primeraPalabra(document.getElementById('apellido').value).toUpperCase(),
+            // Género no se comparte con partners: se graba tal cual, sin
+            // transformar, y debe excluirse de cualquier export compartido.
             genero: document.querySelector('input[name="genero"]:checked').value,
-            nombreEmpresa: document.getElementById('nombreEmpresa').value.trim(),
-            rutPersona: document.getElementById('rutPersona').value.trim(),
-            rutEmpresa: document.getElementById('rutEmpresa').value.trim(),
+            nombreEmpresa: document.getElementById('nombreEmpresa').value.trim().toUpperCase(),
+            rutPersona: document.getElementById('rutPersona').value.trim().toUpperCase(),
+            rutEmpresa: document.getElementById('rutEmpresa').value.trim().toUpperCase(),
             email: emailInput.value.trim().toLowerCase(),
-            rubro: document.getElementById('rubro').value,
+            rubro: document.getElementById('rubro').value.toUpperCase(),
             facturacion: document.getElementById('facturacion').value,
-            trabajadores: parseInt(trabajadores.value),
+            trabajadores: trabajadores.value,
             celular: '+56 9' + celularInput.value.trim(),
-            newsletter: document.querySelector('input[name="newsletter"]:checked').value,
-            aceptaPoliticaPrivacidad: true
+            newsletter: document.querySelector('input[name="newsletter"]:checked').value.toUpperCase()
         };
 
         btnSubmit.disabled = true;
